@@ -32,9 +32,9 @@ const games = [
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swapperDocument))
 
-app.get('/games', (req, res) => {
+/*app.get('/games', (req, res) => {
     res.send(["Witcher 3", "For Honor", "Metro EXODUS"])
-})
+})*/
 
 app.get('/games/:id', (req, res) => {
     if (typeof games[req.params.id - 1] === "undefined"){
@@ -43,6 +43,16 @@ app.get('/games/:id', (req, res) => {
         })
     }
     res.send(games[req.params.id - 1])
+})
+
+app.post("/games", (req, res) => {
+    games.push({
+        id: games.length + 1,
+        name: req.body.name,
+        price: req.body.price
+    })
+
+    res.end();
 })
 
 app.listen(8080, (err) => {
