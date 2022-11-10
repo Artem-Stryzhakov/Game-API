@@ -15,7 +15,7 @@ const swapperDocument = yamljs.load('./docs/swapper.yaml')
             if (error) throw err;
             db.close();
         })
-    })
+    })f
 })*/
 
 const games = [
