@@ -1,0 +1,63 @@
+openapi: 3.0.2
+info:
+  title: Games-API
+  version: 1.0.0
+  description: '### This is a Swagger UI for our Games-API'
+paths:
+  /games:
+    get:
+      tags:
+        - games
+      responses:
+        '304':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                List of games:
+                  value:
+                    - Witcher 3
+                    - For Honor
+                    - Metro EXODUS
+      summary: Get full details of a game
+      description: Returns a list of all games in API
+  '/games/:id':
+    get:
+      tags:
+        - details
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+              examples:
+                Full Details of a given game:
+                  value: " [\r\n    {id: 1, name: \"Witcher 3\", price: 29.99},\r\n    {id: 2, name: \"For Honor\", price: 29.99},\r\n    {id: 3, name: \"Metro EXODUS\", price: 19.99},\r\n    {id: 4, name: \"Minecraft\", price: 19.99},\r\n    {id: 5, name: \"CS:Source\", price: 5.99},\r\n    {id: 6, name: \"The Elder Scrolls Online\", price: 49.99},\r\n    {id: 7, name: \"GTA 5\", price: 29.99},\r\n    {id: 8, name: \"Marvel Spider-man\", price: 59.99},\r\n    {id: 9, name: \"Forza Horizon 5\", price: 59.99}\r\n]"
+          description: Returns full details of a given id name
+        '404':
+          content:
+            application/json:
+              examples:
+                Game /w+ was not found:
+                  value: Game /w+ was not found
+      operationId: id
+      summary: Get full details of a game
+      description: |
+        Returns full details of a given id game
+components:
+  schemas:
+    error:
+      title: Root Type for error
+      description: ''
+      type: object
+      properties:
+        error:
+          type: string
+      example:
+        error: Error message
