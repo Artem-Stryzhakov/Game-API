@@ -1,9 +1,13 @@
-const app = require('express')();
+const express = require("express");
+const app = express();
+
 const swaggerUi = require('swagger-ui-express');
 // const swaggerDocument = require('./docs/swapper.json')
 const mongodb = require('mongodb').MongoClient;
 const yamljs = require('yamljs');
 const swapperDocument = yamljs.load('./docs/swapper.yaml')
+
+app.use(express.json())
 
 //const url = "mongodb+srv://artem:WebDevelop@fullstackproject.gx3iiu1.mongodb.net/?retryWrites=true&w=majority"
 
@@ -30,11 +34,11 @@ const games = [
     {id: 9, name: "Forza Horizon 5", price: 59.99}
 ]
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swapperDocument))
+app.use('./docs', swaggerUi.serve, swaggerUi.setup(swapperDocument))
 
-/*app.get('/games', (req, res) => {
-    res.send(["Witcher 3", "For Honor", "Metro EXODUS"])
-})*/
+app.get('/games', (req, res) => {
+    res.send(games)
+})
 
 app.get('/games/:id', (req, res) => {
     if (typeof games[req.params.id - 1] === "undefined"){
@@ -45,15 +49,28 @@ app.get('/games/:id', (req, res) => {
     res.send(games[req.params.id - 1])
 })
 
-app.post("/games", (req, res) => {
-    games.push({
+app.post('/games', (req, res) => {
+    if (!req.body.name && !req.body.price) {
+        return res.status(400).send({
+            error: "One or all params are missing"
+        })
+    }
+
+    let game = {
         id: games.length + 1,
         name: req.body.name,
         price: req.body.price
-    })
+    }
+    games.push(game)
+
+    res.status(201).location(`${getBaseUrl(req)}/games/${games.length}`)
 
     res.end();
 })
+
+function getBaseUrl(req) {
+    return req.connection && req.connection.encrypted ? 'https' : 'http' + `://${req.headers.host}`
+}
 
 app.listen(8080, (err) => {
     if (err){
