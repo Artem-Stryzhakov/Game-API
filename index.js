@@ -3,7 +3,7 @@ const app = express();
 
 const swaggerUi = require('swagger-ui-express');
 // const swaggerDocument = require('./docs/swapper.json')
-const mongodb = require('mongodb').MongoClient;
+// const mongodb = require('mongodb').MongoClient;
 const yamljs = require('yamljs');
 const swapperDocument = yamljs.load('./docs/swapper.yaml')
 
