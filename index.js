@@ -68,6 +68,14 @@ app.post('/games', (req, res) => {
     res.end();
 })
 
+app.delete('/games/:id', (req, res) => {
+    if (typeof games[req.params.id - 1] === 'undefined') return res.status(404).send({error: "Game not found"});
+
+    games.splice(req.params.id - 1, 1)
+
+    res.status(204).send({error: "No content"})
+})
+
 function getBaseUrl(req) {
     return req.connection && req.connection.encrypted ? 'https' : 'http' + `://${req.headers.host}`
 }
