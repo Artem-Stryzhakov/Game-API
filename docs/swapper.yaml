@@ -6,9 +6,22 @@ info:
 paths:
   /games:
     get:
+      requestBody:
+        description: |
+          new game to be created
+        content:
+          Error:
+            schema:
+              $ref: '#/components/schemas/error'
+        required: true
       tags:
         - games
       responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/new-game'
         '304':
           content:
             application/json:
@@ -22,8 +35,12 @@ paths:
                     - Witcher 3
                     - For Honor
                     - Metro EXODUS
+        '400':
+          description: One or all params missing.
       summary: Get full details of a game
       description: Returns a list of all games in API
+    post:
+      tags: []
   '/games/:id':
     get:
       tags:
@@ -61,3 +78,17 @@ components:
           type: string
       example:
         error: Error message
+    new-game:
+      description: ''
+      required:
+        - name
+        - price
+      type: object
+      properties:
+        name:
+          description: ''
+          type: string
+        price:
+          format: float
+          description: ''
+          type: number
